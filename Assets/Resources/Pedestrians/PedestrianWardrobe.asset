@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 002ab10a3b77f8447850ad55a4d80a99, type: 3}
+  m_Name: PedestrianWardrobe
+  m_EditorClassIdentifier: Assembly-CSharp::PedestrianWardrobe
+  donors:
+  - key: 02_Wave_Kohaku
+    helmetless: {fileID: 4300000, guid: b2dab3f002203d641a87bc9b9705addf, type: 2}
+    caps:
+    - {fileID: 4300000, guid: 57f4ceb6880775d4385c91d614da0b8a, type: 2}
+    - {fileID: 4300000, guid: d6f8b961d3ad6dd4497706038629d2f0, type: 2}
+    - {fileID: 4300000, guid: 2f3abec3da138e342bfc34e88daa0f81, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 373ee677c60cd5f4aac216c236731ecb, type: 2}
+      hair: {fileID: 2100000, guid: 32156bad15813c04cb18a0e64e81b236, type: 2}
+      dist: {fileID: 2100000, guid: 6a2a1f7df3a11a74f9f6ebcb8d94969e, type: 2}
+      hairCap: {fileID: 2100000, guid: 4a60d8ac04eb5434a8dec515d77595e1, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: 014e8c546883a0042916bbefc148b06b, type: 2}
+      hair: {fileID: 2100000, guid: 3ef1164dade3ebe4782300a062d0fc0a, type: 2}
+      dist: {fileID: 2100000, guid: 5925115f64c312045a979937d1f11c2d, type: 2}
+      hairCap: {fileID: 2100000, guid: b68d605b2e90afb44bab0d085b0189b0, type: 2}
+  - key: 03_StandA_Marina
+    helmetless: {fileID: 4300000, guid: f664b5ace1713be4abb8e6443118a94f, type: 2}
+    caps:
+    - {fileID: 4300000, guid: b8407eb0e2c720f458fdc777818a6202, type: 2}
+    - {fileID: 4300000, guid: cad9f203f4c49bd448f6c2b2d70515d2, type: 2}
+    - {fileID: 4300000, guid: c3b7d437d8d28124294834b7d8010fa1, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 5e95f294e2389c146a75fcfdf981f0f6, type: 2}
+      hair: {fileID: 2100000, guid: 18e907d2a7f411949bd53f647e35be0e, type: 2}
+      dist: {fileID: 2100000, guid: 1964a59e2cee4bd4b8d64e6a13b55afe, type: 2}
+      hairCap: {fileID: 2100000, guid: 59b8ac069b87dc4489965867f430c1e6, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: 804f3be1d628cf74baca95d7d8e6489c, type: 2}
+      hair: {fileID: 2100000, guid: 90d4bcd97bcac2a45ab8f02537f3b59a, type: 2}
+      dist: {fileID: 2100000, guid: 3661d8607b29d0842a5b04e96fe0ac9e, type: 2}
+      hairCap: {fileID: 2100000, guid: 3b2568f22a902c3498df44c613b7abec, type: 2}
+  - key: 04_StandB_Kaoru
+    helmetless: {fileID: 4300000, guid: 0fe69080cb84bd24c94aab9dc3e431c2, type: 2}
+    caps:
+    - {fileID: 4300000, guid: 9009760b2ef71ee4993295ab2047ec7f, type: 2}
+    - {fileID: 4300000, guid: f345a5dc2e8b52f4aa541880519222b0, type: 2}
+    - {fileID: 4300000, guid: 45279fcbd4d48084e9b98eb201176a5d, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 1c256b65841b85a4da45b0bc002c6729, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 98e14b13a9dfa694aba2c86ba9d53a6c, type: 2}
+      hairCap: {fileID: 2100000, guid: 25ee8cc0b0d31ba40b5a81752148d6e0, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: fc52c4b7f7006a742a777b979af9bac1, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: b2fc55135b74a9b48be2601d86d750c0, type: 2}
+      hairCap: {fileID: 2100000, guid: c61b912031facb5429ff270ef44232bc, type: 2}
+  - key: 05_Walk_Rina
+    helmetless: {fileID: 4300000, guid: d3aa11f4ebc54f44ea57dc9c21b38f7b, type: 2}
+    caps:
+    - {fileID: 4300000, guid: fe2770aec2e5846468eae6e6bfdf7d71, type: 2}
+    - {fileID: 4300000, guid: 906304e42f2ac614ea223f09d7dedec9, type: 2}
+    - {fileID: 4300000, guid: 9f1f812d92e759443b9cfa0921024006, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: eb91d07ed2d55d14ab465ddbcdd26685, type: 2}
+      hair: {fileID: 2100000, guid: e423abb87bd965f4f8a64e1cdbeee51d, type: 2}
+      dist: {fileID: 2100000, guid: f5d134ba88d5b68438de076eab6d2639, type: 2}
+      hairCap: {fileID: 2100000, guid: f61c8196b96077042811f43a76773299, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: ccd5cad1bc42bd1499fb3257ca1b11f0, type: 2}
+      hair: {fileID: 2100000, guid: adfbceab4eb632442bc0d6286c7cd811, type: 2}
+      dist: {fileID: 2100000, guid: 8e31fade62c39e24e9a22d5966016917, type: 2}
+      hairCap: {fileID: 2100000, guid: bec55bb66164fb247a41c414170c6b3b, type: 2}
+    - id: V2
+      body: {fileID: 2100000, guid: 3e1d59a33ace6424ab1d6885a04f33d1, type: 2}
+      hair: {fileID: 2100000, guid: 160b770f4766884499dde44f0fcbbe51, type: 2}
+      dist: {fileID: 2100000, guid: 90294f877f00a2649a8332e660410e2a, type: 2}
+      hairCap: {fileID: 2100000, guid: 050e30b5801c82940b07376cb115c619, type: 2}
+  - key: 06_Sit_Sena
+    helmetless: {fileID: 4300000, guid: f421cd4aca4379949802ce23259efb12, type: 2}
+    caps:
+    - {fileID: 4300000, guid: 29a844cef53f67f4fa67a5da61f3ddf4, type: 2}
+    - {fileID: 4300000, guid: 5de04ce084768864e926c5c205b15379, type: 2}
+    - {fileID: 4300000, guid: 240130e45c67a124a9acc97010d7e087, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 139df3a60fae8be41aee3b829253f90d, type: 2}
+      hair: {fileID: 2100000, guid: 4add8166d6f6cc041bd61d65c968f3ac, type: 2}
+      dist: {fileID: 2100000, guid: d201e887592cd1048b37656c096ccfee, type: 2}
+      hairCap: {fileID: 2100000, guid: fd64bc1e7d8793c4db9d1664050854b6, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: 77966e1727e470c4288285fdf6eed280, type: 2}
+      hair: {fileID: 2100000, guid: 1b8a58b3c77a6614d923fa026df75b57, type: 2}
+      dist: {fileID: 2100000, guid: 421503af19be28b4db816323776e8c9a, type: 2}
+      hairCap: {fileID: 2100000, guid: 645ba06216a67194fa4d390abe9e5764, type: 2}
+    - id: V2
+      body: {fileID: 2100000, guid: 72bb95de5431c8544bf6e26fc5d5405e, type: 2}
+      hair: {fileID: 2100000, guid: fe929f7fb77ed8040bcfa8b70e04bacd, type: 2}
+      dist: {fileID: 2100000, guid: 2e2727deed04a50449b09196b8027764, type: 2}
+      hairCap: {fileID: 2100000, guid: 546c722c4bd9c474897a84b7332475d9, type: 2}
+    - id: V3
+      body: {fileID: 2100000, guid: 75b6b0ae1103ec7488f5ec66ce6ae776, type: 2}
+      hair: {fileID: 2100000, guid: befb72d10bb4b79448428139f45a0f28, type: 2}
+      dist: {fileID: 2100000, guid: ab8ecf1385bfcce4b8c63c178733173b, type: 2}
+      hairCap: {fileID: 2100000, guid: 6987ae7adaa56b445a4138148f3c003f, type: 2}
+    - id: V4
+      body: {fileID: 2100000, guid: ce0ee33b697f1804aaaac8270c854ca0, type: 2}
+      hair: {fileID: 2100000, guid: e9ae8e33db36a47418c54107759a639c, type: 2}
+      dist: {fileID: 2100000, guid: 125c0c1be5cb77c43a2fda4a0eb8e1c7, type: 2}
+      hairCap: {fileID: 2100000, guid: e52c4c8b744aede4483082c182ed8071, type: 2}
+    - id: V5
+      body: {fileID: 2100000, guid: 6c9da7225da9b9f42b47485c5db5c2af, type: 2}
+      hair: {fileID: 2100000, guid: 8181ef9c8c6080244b3200048ef99da3, type: 2}
+      dist: {fileID: 2100000, guid: 11fdffb02cd72e041981ffcd2649eb77, type: 2}
+      hairCap: {fileID: 2100000, guid: a2197eaef5e87ab419e64f72b36fe00e, type: 2}
+  - key: 09_Walk_Hibiki
+    helmetless: {fileID: 4300000, guid: b1f3ccef8817202489ce11ef098ec265, type: 2}
+    caps:
+    - {fileID: 4300000, guid: e0fff1fb4176e144bbead7bfb72f8f25, type: 2}
+    - {fileID: 4300000, guid: 4add0d638fbc9d342854ae6baea58bf8, type: 2}
+    - {fileID: 4300000, guid: 4bb0f5bbbdcd2ff4182810bcc6f183ba, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 1fbed351c0ff1b54f99eedc4e0358afb, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 94220128ad7330f4a88cba3ec50605a7, type: 2}
+      hairCap: {fileID: 2100000, guid: 76f7553ecf1a8f145883959ded4b653b, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: 1b6416c21b8aff34dacb50f215ccbbaf, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: aea2b51f0bddd33418029fa09889ca5a, type: 2}
+      hairCap: {fileID: 2100000, guid: 750c3554b7a8ecd44af6b1659c3c4568, type: 2}
+    - id: V2
+      body: {fileID: 2100000, guid: fed3d314e722d9a4da9cbf5761e63ea4, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 21907b31b6236834fb5b64ec8cc694bc, type: 2}
+      hairCap: {fileID: 2100000, guid: 2776b6f14525d7041802280587a2b62b, type: 2}
+  - key: 10_Walk_Asuka
+    helmetless: {fileID: 4300000, guid: 37ecc9d9849965f498053159946e6769, type: 2}
+    caps:
+    - {fileID: 4300000, guid: 45a74e24f4802dd4ebf6f73b405e8f90, type: 2}
+    - {fileID: 4300000, guid: 9a61b226403531043ae5744358d37e03, type: 2}
+    - {fileID: 4300000, guid: 3b46b4c2454c7704a92a3568fcba70b3, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 52fcc126b3a2c5348badf5a0bba85ce8, type: 2}
+      hair: {fileID: 2100000, guid: cb015c41b244af7438dc6c4702f93094, type: 2}
+      dist: {fileID: 2100000, guid: 6c5aeb7a930f4d44b8032bfc496ab77c, type: 2}
+      hairCap: {fileID: 2100000, guid: 61ea19a161dcd0642be0570e69e3bb08, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: 15ffb91bfdc605841a9e3a2a3b1dcbe6, type: 2}
+      hair: {fileID: 2100000, guid: 4dc93b951794a4e47984e1eee6a66641, type: 2}
+      dist: {fileID: 2100000, guid: 82f61e6898a85f942b5a0170ef15c80c, type: 2}
+      hairCap: {fileID: 2100000, guid: 9cd66a98efabf204c8d19b3ba316714b, type: 2}
+    - id: V2
+      body: {fileID: 2100000, guid: 1ae21a2127a0a014a8157c08cc91dae6, type: 2}
+      hair: {fileID: 2100000, guid: b6dabdbe6ae97444f800708592cb10e5, type: 2}
+      dist: {fileID: 2100000, guid: 020342ab4ed6b0249bf5e572c82e32c3, type: 2}
+      hairCap: {fileID: 2100000, guid: 944c280480f0af34a90750a6966f7c41, type: 2}
+  - key: 11_Walk_Yutaka
+    helmetless: {fileID: 4300000, guid: 392d4b4c7081ee944bcaae7230230f18, type: 2}
+    caps:
+    - {fileID: 4300000, guid: ee5ae1c9202a9df49a1cc0a98818647a, type: 2}
+    - {fileID: 4300000, guid: 8ea2037489adbbb49ac8ba40c58ce571, type: 2}
+    - {fileID: 4300000, guid: 00668d02b05ced649b0b45cbd67906dc, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: b9b6917b32c3cff46a83bf4868db8680, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 81a01ade2f4798047b9dfbf16d32e893, type: 2}
+      hairCap: {fileID: 2100000, guid: fe5b885793b58c64a8c077177513a0b9, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: bcb4e7aa0b7217c42a13cf77c61d2f9d, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 15f7c429d2cd8a244ab39e8ae3fd6072, type: 2}
+      hairCap: {fileID: 2100000, guid: 11af91e228534f1468f899a7dd4c0022, type: 2}
+    - id: V2
+      body: {fileID: 2100000, guid: 5ae2d6eddca3b224391afccc300d696a, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 53cd427c4c015004c8634966d4c21a92, type: 2}
+      hairCap: {fileID: 2100000, guid: 155b30ebedf4c0a46a527f424427303d, type: 2}
+  - key: 12_Walk_Junpei
+    helmetless: {fileID: 4300000, guid: 7129d1db466f90048aed3ac8cd211063, type: 2}
+    caps:
+    - {fileID: 4300000, guid: 1a1586d9d54f3f044a16d5387095c4bd, type: 2}
+    - {fileID: 4300000, guid: a439f09eb2cc75a478119eed8ac10467, type: 2}
+    - {fileID: 4300000, guid: 433ba47cb56498449a09b16d172c1f21, type: 2}
+    looks:
+    - id: V0
+      body: {fileID: 2100000, guid: 694552920158c3f49861115d0922b457, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 624cdc18959c2e34c89c7978c79b31ec, type: 2}
+      hairCap: {fileID: 2100000, guid: 9779c554c03102f4384845423b985106, type: 2}
+    - id: V1
+      body: {fileID: 2100000, guid: 74584f25bfd0caf4e8fc5744e0f1f4dc, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 7a3912271963676429d143371eb504ea, type: 2}
+      hairCap: {fileID: 2100000, guid: c22b1c18a6deeff4bac471b8b00370f2, type: 2}
+    - id: V2
+      body: {fileID: 2100000, guid: 1a1598096261664488a6ab4094cecde1, type: 2}
+      hair: {fileID: 0}
+      dist: {fileID: 2100000, guid: 1353aa5b5a3c77e44b5f37507d94233d, type: 2}
+      hairCap: {fileID: 2100000, guid: bc639f5c3ba48c542acd01d4cd726a74, type: 2}

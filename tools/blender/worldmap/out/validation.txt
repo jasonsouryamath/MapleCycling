@@ -1,0 +1,60 @@
+# world_terrain validation
+
+summit sakura_pass      target  1320 m  was  1138.7  now  1320.0
+summit shiosai_coast    target   170 m  was   199.3  now   170.0
+summit maple_city       target    40 m  was    92.8  now    40.0
+summit azora_highlands  target  1980 m  was  1614.7  now  1980.0
+summit taka_mountains   target  2842 m  was  2170.2  now  2842.0
+summit fuji_ridge       target  1776 m  was  1695.3  now  1775.9
+summit minato_port      target     6 m  was    82.1  now     6.0
+summit nagisa_bay       target   420 m  was   405.4  now   405.4
+summit northern_wilds   target   900 m  was   683.4  now   900.0
+summit kage_forest      target   720 m  was   755.1  now   720.0
+summit kitsune_fields   target    60 m  was   226.5  now    60.0
+summit bamboo_valley    target   180 m  was   638.2  now   180.0
+summit tsuki_islands    target   160 m  was   102.7  now   160.0
+summit sunset_canyon    target   720 m  was   668.4  now   720.0
+summit kaze_cape        target    90 m  was   185.7  now    90.0
+summit mizuumi_lakes    target   760 m  was   829.0  now   760.0
+summit hinode_caldera   target  1100 m  was   951.4  now  1100.0
+summit chaen_terraces   target   540 m  was   617.1  now   540.0
+summit hotaru_delta     target     5 m  was    83.1  now     5.0
+summit kumo_isle        target   920 m  was   882.3  now   920.0
+river Kawa               source   500.5 m -> mouth    0.7 m  monotone=True
+river Shirakawa          source   537.0 m -> mouth   49.3 m  monotone=True
+river Hotaru             source  1743.1 m -> mouth   44.6 m  monotone=True
+river Hotaru West Mouth  source    79.9 m -> mouth   79.5 m  monotone=True
+river Hotaru East Mouth  source    76.8 m -> mouth   76.8 m  monotone=True
+river Momo               source  2312.4 m -> mouth   -3.0 m  monotone=True
+river Akane              source   886.5 m -> mouth   36.2 m  monotone=True
+river Mizu               source   852.1 m -> mouth   -3.0 m  monotone=True
+river Kita               source   682.1 m -> mouth   -3.0 m  monotone=True
+river Kitsune            source  1069.9 m -> mouth   76.6 m  monotone=True
+river Seta               source   362.8 m -> mouth  285.7 m  monotone=True
+river Kage               source   899.7 m -> mouth   -3.0 m  monotone=True
+road maple_city      -> nagisa_bay        49.8 km  found=True  wet_nodes=0
+road maple_city      -> bamboo_valley     57.9 km  found=True  wet_nodes=0
+road bamboo_valley   -> sakura_pass       54.5 km  found=True  wet_nodes=0
+road sakura_pass     -> kage_forest       56.0 km  found=True  wet_nodes=0
+road kage_forest     -> northern_wilds    69.0 km  found=True  wet_nodes=0
+road sakura_pass     -> chaen_terraces    49.8 km  found=True  wet_nodes=0
+road chaen_terraces  -> kitsune_fields    59.3 km  found=True  wet_nodes=0
+road kitsune_fields  -> hinode_caldera    60.6 km  found=True  wet_nodes=0
+road kage_forest     -> hinode_caldera    47.5 km  found=True  wet_nodes=0
+road maple_city      -> fuji_ridge        61.9 km  found=True  wet_nodes=0
+road fuji_ridge      -> mizuumi_lakes     77.4 km  found=True  wet_nodes=0
+road mizuumi_lakes   -> taka_mountains    71.4 km  found=True  wet_nodes=0
+road maple_city      -> hotaru_delta     118.2 km  found=True  wet_nodes=0
+road hotaru_delta    -> azora_highlands   37.6 km  found=True  wet_nodes=0
+road azora_highlands -> taka_mountains    48.6 km  found=True  wet_nodes=0
+road hotaru_delta    -> shiosai_coast     64.0 km  found=True  wet_nodes=0
+road shiosai_coast   -> kaze_cape         62.7 km  found=True  wet_nodes=0
+road shiosai_coast   -> sunset_canyon     68.2 km  found=True  wet_nodes=0
+road sunset_canyon   -> taka_mountains    83.2 km  found=True  wet_nodes=0
+road hotaru_delta    -> minato_port      104.9 km  found=True  wet_nodes=0
+road fuji_ridge      -> northern_wilds    99.8 km  found=True  wet_nodes=0
+road bamboo_valley   -> chaen_terraces    39.6 km  found=True  wet_nodes=0
+road nagisa_bay      -> chaen_terraces   116.7 km  found=True  wet_nodes=0
+
+max terrain 4095 m, min -189 m, land 39.4 %
+ERRORS: none

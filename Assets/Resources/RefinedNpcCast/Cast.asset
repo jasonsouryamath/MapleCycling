@@ -1,0 +1,393 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5238006873a23849ae5be980014b7ce, type: 3}
+  m_Name: Cast
+  m_EditorClassIdentifier: Assembly-CSharp::RefinedNpcCast
+  riders:
+  - name: Akihiro
+    body:
+      mesh: {fileID: 4300000, guid: dd2d29b946cc8414e8ae79df1239532d, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 8055c0bed47954d4f8d742e6621cece5, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+    extras:
+    - mesh: {fileID: 4300000, guid: 4868b55742219364189ef5f5b706ef01, type: 2}
+      materials:
+      - {fileID: 2100000, guid: f30c185c20c7b3a4f8862cf2d880fbd0, type: 2}
+      - {fileID: 2100000, guid: 7953ed349b460c446861092f5dfab825, type: 2}
+      - {fileID: 2100000, guid: 3331f2cd84f5e7842a944591f9579281, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+  - name: Akane
+    body:
+      mesh: {fileID: 4300000, guid: de7765c08505414429e58d3dd6d85890, type: 2}
+      materials:
+      - {fileID: 2100000, guid: e6eacf7c82c383a4bb3f52bf7be1f991, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+    extras:
+    - mesh: {fileID: 4300000, guid: 0166473b41e744949a28ff37ff4d2372, type: 2}
+      materials:
+      - {fileID: 2100000, guid: c967b266d32785749b7459029b32b466, type: 2}
+      - {fileID: 2100000, guid: 821d6f70717cf2344b65fd954db6862c, type: 2}
+      - {fileID: 2100000, guid: f65acc4ef7ff0664b8f30710bbc36d41, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+  - name: Shiori
+    body:
+      mesh: {fileID: 4300000, guid: 12b6800018b9a1b4680985a3d1df3a6d, type: 2}
+      materials:
+      - {fileID: 2100000, guid: ce0bc9484ab15df498ed638d2e903583, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+    extras:
+    - mesh: {fileID: 4300000, guid: d73d53bc430606047bdc1f956ea6fe55, type: 2}
+      materials:
+      - {fileID: 2100000, guid: b0bf35b91566efd4e9e907a6f6223bcc, type: 2}
+      - {fileID: 2100000, guid: a4531a4e919785a428345b10938dd49a, type: 2}
+      - {fileID: 2100000, guid: 37c02935accfdb441b2dc04b09bf3fef, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+  - name: Shinobu
+    body:
+      mesh: {fileID: 4300000, guid: 7b72111608ed8e6448657b12f409d2f8, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 1a625e6d82899b9438001ed7905be986, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+    extras:
+    - mesh: {fileID: 4300000, guid: 3e32cd22bd1e57a4ba76baf4a1d04e4c, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 0ae0e15c88475bb4ca5fcb0336e761d3, type: 2}
+      - {fileID: 2100000, guid: 4c8912fa34c11d0448bc3bdf2b08fdba, type: 2}
+      - {fileID: 2100000, guid: 74c7f58215a18374bbf4e4b302d09c6f, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+  - name: Coral
+    body:
+      mesh: {fileID: 4300000, guid: 0e2628b0ae4a82a4b91b86b181563ef1, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 155b4fb6bc16c9842994bca00b06db2a, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+    extras:
+    - mesh: {fileID: 4300000, guid: aecf11b05214dc34ebde228cd1e0f52f, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 27fc937cb0371c94996106505f98e8a3, type: 2}
+      - {fileID: 2100000, guid: 724750a700191dd42b60eaca830ed485, type: 2}
+      - {fileID: 2100000, guid: 85987a07604c0bd4e962793c3bc2f1d3, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+  - name: Hanakage
+    body:
+      mesh: {fileID: 4300000, guid: 706e221411e128e44a99bc59a818986a, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 460e3a1bcf7afc54188a0d0542740cde, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
+    extras:
+    - mesh: {fileID: 4300000, guid: 19a311156c0bf614a8ed19ad77fa5ac8, type: 2}
+      materials:
+      - {fileID: 2100000, guid: 5795883aed5e83c48b0861e70a43a2aa, type: 2}
+      - {fileID: 2100000, guid: 8cfb5fc467f60fd478feeba5dd6661f5, type: 2}
+      - {fileID: 2100000, guid: 158cb7a6e8a14bc469f400f7d1555491, type: 2}
+      bones:
+      - Hips
+      - LeftUpLeg
+      - LeftLeg
+      - LeftFoot
+      - LeftToeBase
+      - RightUpLeg
+      - RightLeg
+      - RightFoot
+      - RightToeBase
+      - Spine02
+      - Spine01
+      - Spine
+      - LeftShoulder
+      - LeftArm
+      - LeftForeArm
+      - LeftHand
+      - RightShoulder
+      - RightArm
+      - RightForeArm
+      - RightHand
+      - neck
+      - Head
+      - head_end
+      - headfront
+      rootBone: Hips
