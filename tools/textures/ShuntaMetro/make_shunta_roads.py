@@ -201,7 +201,7 @@ def make_road(kind):
         ring = np.clip((0.37 - r) * ppm + 0.5, 0, 1) - cover
         kk = 2 * np.pi / 0.045
         patt = 0.5 + 0.5 * np.cos(kk * (dx + dy)) * np.cos(kk * (dx - dy))
-        iron = np.array([52, 50, 48], np.float32)[None, None, :] * (0.8 + 0.25 * fine[..., None] * 0.3 + 0.35 * patt[..., None])
+        iron = np.array([108, 104, 96], np.float32)[None, None, :] * (0.72 + 0.25 * fine[..., None] * 0.3 + 0.4 * patt[..., None])
         rust = smoothstep(1.2, 2.2, mid + 0.4 * fine)[..., None] * np.array([70, 30, 12], np.float32) * 0.45
         alb = alb * (1 - cover[..., None]) + (iron + rust) * cover[..., None]
         alb = alb * (1 - ring[..., None] * 0.7)
@@ -223,14 +223,16 @@ def make_road(kind):
 
     # ---------------------------------------------------------------- extra manholes (2026-10-04: a cover every few metres, never the same lane twice in a row)
     if c.get("manhole"):
-        for (mx, my, mr) in ((2.6, 1.8, 0.30), (5.7, 11.0, 0.33), (7.7, 16.2, 0.28)):
+        for (mx, my, mr) in ((2.4, 1.8, 0.40), (6.6, 11.0, 0.42), (6.7, 16.2, 0.38), (2.3, 6.4, 0.40)):
             dx, dy = X - mx, ((Y - my + ROAD_L / 2) % ROAD_L) - ROAD_L / 2
             rr = np.sqrt(dx * dx + dy * dy)
             cover = np.clip((mr - rr) * ppm + 0.5, 0, 1)
             ring = np.clip((mr + 0.045 - rr) * ppm + 0.5, 0, 1) - cover
             kk = 2 * np.pi / 0.04
             patt = 0.5 + 0.5 * np.cos(kk * (dx + dy)) * np.cos(kk * (dx - dy))
-            iron = np.array([50, 48, 46], np.float32)[None, None, :] * (0.8 + 0.35 * patt[..., None])
+            iron = np.array([112, 108, 100], np.float32)[None, None, :] * (0.72 + 0.4 * patt[..., None])
+            collar = np.clip((mr + 0.13 - rr) * ppm + 0.5, 0, 1) - np.clip((mr + 0.05 - rr) * ppm + 0.5, 0, 1)
+            alb = alb + collar[..., None] * 38.0   # pale worn concrete/steel collar so the cover reads against dark asphalt
             alb = alb * (1 - cover[..., None]) + iron * cover[..., None]
             alb = alb * (1 - ring[..., None] * 0.75)
             hgt = hgt + cover * (0.7 + 1.0 * patt) - ring * 2.4
