@@ -34,6 +34,7 @@ public sealed class ShuntaLifeDirector : MonoBehaviour
     // shared materials
     Material _matTrainBody, _matTrainStripe, _matTrainWindow, _matHead, _matTail;
     Material[] _matCars;
+    Material _matGlass, _matTyre;
     Mesh _cube;
 
     // train
@@ -176,9 +177,12 @@ public sealed class ShuntaLifeDirector : MonoBehaviour
         _matTrainWindow = Mat(s.trainWindow * 0.3f, s.trainWindow * s.windowIntensity, 0.2f);
         _matHead = Mat(Color.white, new Color(1f, 0.95f, 0.8f) * s.headlightIntensity, 0.2f);
         _matTail = Mat(new Color(0.5f, 0.02f, 0.02f), new Color(1f, 0.05f, 0.05f) * s.taillightIntensity, 0.2f);
-        var cols = new[] { new Color(0.08f, 0.08f, 0.1f), new Color(0.75f, 0.75f, 0.78f), new Color(0.6f, 0.08f, 0.1f), new Color(0.1f, 0.2f, 0.45f), new Color(0.85f, 0.8f, 0.7f) };
+        var cols = new[] { new Color(0.10f, 0.10f, 0.12f), new Color(0.72f, 0.73f, 0.76f), new Color(0.55f, 0.08f, 0.10f), new Color(0.12f, 0.22f, 0.46f), new Color(0.82f, 0.78f, 0.68f), new Color(0.14f, 0.32f, 0.26f) };
         _matCars = new Material[cols.Length];
-        for (int i = 0; i < cols.Length; i++) _matCars[i] = Mat(cols[i], Color.black, 0.75f);
+        // satin paint: modest smoothness keeps the cars from picking up screen-space reflections or looking like plastic toys
+        for (int i = 0; i < cols.Length; i++) { _matCars[i] = Mat(cols[i], Color.black, 0.55f); _matCars[i].SetFloat("_Metallic", 0.35f); }
+        _matGlass = Mat(new Color(0.03f, 0.04f, 0.05f), Color.black, 0.65f);
+        _matTyre = Mat(new Color(0.03f, 0.03f, 0.03f), Color.black, 0.15f);
     }
 
     static Material Mat(Color albedo, Color emission, float smooth)
@@ -236,13 +240,12 @@ public sealed class ShuntaLifeDirector : MonoBehaviour
         {
             var c = new GameObject("Car" + i).transform;
             c.SetParent(_root, false);
-            Box(c, "Body", new Vector3(0f, 0.55f, 0f), new Vector3(w, 0.8f, l), _matCars[i % _matCars.Length]);
-            Box(c, "Cabin", new Vector3(0f, 1.2f, -0.2f), new Vector3(w * 0.85f, 0.6f, l * 0.5f), _matCars[(i + 2) % _matCars.Length]);
-            // front = +Z (headlights), back = -Z (taillights)
-            Box(c, "HeadL", new Vector3(-w * 0.35f, 0.6f, l * 0.5f), new Vector3(0.4f, 0.2f, 0.08f), _matHead);
-            Box(c, "HeadR", new Vector3(w * 0.35f, 0.6f, l * 0.5f), new Vector3(0.4f, 0.2f, 0.08f), _matHead);
-            Box(c, "TailL", new Vector3(-w * 0.35f, 0.6f, -l * 0.5f), new Vector3(0.4f, 0.2f, 0.08f), _matTail);
-            Box(c, "TailR", new Vector3(w * 0.35f, 0.6f, -l * 0.5f), new Vector3(0.4f, 0.2f, 0.08f), _matTail);
+            var kind = (ShuntaCarMesh.Kind)(i % 3 == 2 && i % 2 == 0 ? 2 : i % 2);   // mostly sedans/hatches, the odd van
+            var mf = c.gameObject.AddComponent<MeshFilter>(); mf.sharedMesh = ShuntaCarMesh.Get(kind);
+            var mr = c.gameObject.AddComponent<MeshRenderer>();
+            mr.sharedMaterials = new[] { _matCars[i % _matCars.Length], _matGlass, _matTyre, _matHead, _matTail };
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;   // real cast shadows ground the cars on the road
+            c.localScale = new Vector3(w / 1.9f, 1f, l / 4.4f);
             c.gameObject.SetActive(false);
             _tCars[i] = c;
             _tSpeed[i] = Random.Range(settings.trafficSpeed.x, settings.trafficSpeed.y);

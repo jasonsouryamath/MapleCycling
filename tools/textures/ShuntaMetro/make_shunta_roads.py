@@ -15,11 +15,11 @@ from shunta_tex_lib import *
 ROAD_W, ROAD_L = 9.0, 18.0
 
 CFG = {
-    "Wet":        dict(w=2048, base=58, tint=(1.00, 1.00, 1.06), grain=15, sm=0.26, puddle=0.085, cracks=11, patches=6, centre="white", track=1.0, manhole=True, seed=100),
-    "Dry":        dict(w=2048, base=92, tint=(1.00, 0.99, 0.97), grain=19, sm=0.16, puddle=0.00, cracks=15, patches=7, centre="yellow", track=0.8, manhole=True, seed=200),
+    "Wet":        dict(w=2048, base=44, tint=(1.00, 1.00, 1.06), grain=15, sm=0.26, puddle=0.085, cracks=11, patches=6, centre="white", track=1.0, manhole=True, drains=True, seed=100),
+    "Dry":        dict(w=2048, base=58, tint=(1.00, 0.99, 0.97), grain=17, sm=0.14, puddle=0.045, cracks=15, patches=7, centre="yellow", track=0.8, manhole=True, drains=True, seed=200),
     "Tunnel":     dict(w=1024, base=116, tint=(1.00, 0.98, 0.93), grain=10, sm=0.22, puddle=0.04, cracks=6, patches=2, centre="white", track=0.8, joints=True, soot=True, seed=300),
-    "Expressway": dict(w=1024, base=66, tint=(1.00, 1.00, 1.03), grain=11, sm=0.22, puddle=0.0, cracks=3, patches=2, centre="white", track=0.9, cats=True, seed=400),
-    "Bridge":     dict(w=1024, base=74, tint=(1.00, 1.00, 1.02), grain=10, sm=0.22, puddle=0.035, cracks=2, patches=1, centre="white", track=0.8, bridge=True, seed=500),
+    "Expressway": dict(w=1024, base=50, tint=(1.00, 1.00, 1.03), grain=10, sm=0.18, puddle=0.02, drains=True, cracks=3, patches=2, centre="white", track=0.9, cats=True, seed=400),
+    "Bridge":     dict(w=1024, base=56, tint=(1.00, 1.00, 1.02), grain=10, sm=0.18, puddle=0.035, drains=True, cracks=2, patches=1, centre="white", track=0.8, bridge=True, seed=500),
 }
 
 
@@ -221,6 +221,42 @@ def make_road(kind):
         metal = np.maximum(metal, rect * 0.55)
         smooth = smooth * (1 - rect) + 0.45 * rect
 
+    # ---------------------------------------------------------------- extra manholes (2026-10-04: a cover every few metres, never the same lane twice in a row)
+    if c.get("manhole"):
+        for (mx, my, mr) in ((2.6, 1.8, 0.30), (5.7, 11.0, 0.33), (7.7, 16.2, 0.28)):
+            dx, dy = X - mx, ((Y - my + ROAD_L / 2) % ROAD_L) - ROAD_L / 2
+            rr = np.sqrt(dx * dx + dy * dy)
+            cover = np.clip((mr - rr) * ppm + 0.5, 0, 1)
+            ring = np.clip((mr + 0.045 - rr) * ppm + 0.5, 0, 1) - cover
+            kk = 2 * np.pi / 0.04
+            patt = 0.5 + 0.5 * np.cos(kk * (dx + dy)) * np.cos(kk * (dx - dy))
+            iron = np.array([50, 48, 46], np.float32)[None, None, :] * (0.8 + 0.35 * patt[..., None])
+            alb = alb * (1 - cover[..., None]) + iron * cover[..., None]
+            alb = alb * (1 - ring[..., None] * 0.75)
+            hgt = hgt + cover * (0.7 + 1.0 * patt) - ring * 2.4
+            ao = ao * (1 - 0.8 * ring)
+            metal = np.maximum(metal, cover * 0.55)
+            smooth = smooth * (1 - cover) + 0.42 * cover
+
+    # sewer drains: slotted iron grates in a concrete frame at the kerbs, with a dark wet stain running down the gutter
+    if c.get("drains"):
+        for (gx, gy) in ((0.62, 3.6), (ROAD_W - 0.62, 9.8), (0.62, 14.9), (ROAD_W - 0.62, 1.2)):
+            dx, dy = X - gx, ((Y - gy + ROAD_L / 2) % ROAD_L) - ROAD_L / 2
+            hx, hy = 0.34, 0.24
+            inner = np.minimum(hx - np.abs(dx), hy - np.abs(dy))
+            body = np.clip(inner * ppm + 0.5, 0, 1)
+            frame = np.clip((inner + 0.05) * ppm + 0.5, 0, 1) - body
+            slot = (np.cos(2 * np.pi * dx / 0.075) > 0.25).astype(np.float32) * np.clip((inner - 0.035) * ppm + 0.5, 0, 1)
+            bars = body * (1 - slot)
+            alb = alb * (1 - frame[..., None] * 0.8) + np.array([88, 86, 82], np.float32) * frame[..., None] * 0.8
+            alb = alb * (1 - body[..., None]) + np.array([46, 44, 42], np.float32) * bars[..., None] + np.array([6, 6, 7], np.float32) * (body - bars)[..., None]
+            hgt = hgt + bars * 1.4 - slot * 3.0 + frame * 0.5
+            ao = ao * (1 - 0.85 * slot)
+            metal = np.maximum(metal, bars * 0.5)
+            smooth = smooth * (1 - body) + 0.38 * bars + 0.1 * slot
+            stain = np.exp(-0.5 * (dx / 0.30) ** 2) * np.clip(1 - np.maximum(dy - 0.1, 0) / 1.6, 0, 1) * (dy > 0.0)
+            alb = alb * (1 - 0.22 * stain[..., None] * (1 - body[..., None]))
+
     # ---------------------------------------------------------------- puddles, damp, oil sheen
     puddle = np.zeros((H, W), np.float32)
     damp = np.zeros((H, W), np.float32)
@@ -240,8 +276,8 @@ def make_road(kind):
             rb = np.stack([0.5 + 0.5 * np.cos(2 * np.pi * (phase + o)) for o in (0.0, 0.33, 0.67)], -1)
             alb = alb + (rb - 0.5) * 34.0 * (puddle * ob * 0.9 + oil * damp * 0.4)[..., None]
         else:
-            smooth = smooth * (1 - puddle * 0.7) + 0.9 * puddle * 0.7
-            alb = alb * (1 - 0.3 * puddle[..., None])
+            smooth = smooth * (1 - puddle * 0.85) + 0.95 * puddle * 0.85
+            alb = alb * (1 - 0.38 * puddle[..., None])
     # wet only: damp film everywhere is carried by the smoothness range; dry keeps it low
 
     # ---------------------------------------------------------------- output maps

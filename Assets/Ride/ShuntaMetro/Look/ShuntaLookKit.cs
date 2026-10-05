@@ -214,13 +214,13 @@ public static class ShuntaLookKit
         string kind = RoadKind(z, wet);
         var a = Tex("Road_" + kind + "_Albedo"); var k = Tex("Road_" + kind + "_Mask");
         if (a == null || k == null) return false;
-        float t = kind == "Wet" ? 0.95f : Mathf.Lerp(1.1f, 0.9f, wet);
+        float t = kind == "Wet" ? 1.20f : Mathf.Lerp(1.35f, 1.15f, wet);      // 2026-10-04: lighter asphalt so streetlight pools and lane paint read
         SetBaseMap(m, a, new Color(t, t, t * 1.03f, 1f));
         SetNormal(m, Tex("Road_" + kind + "_Normal"), 1f);
         // 2026-10-04: caps lowered (was wet .85-.99, dry .55-.95) - roads read as glass; rain zones stay visibly wet but not mirrors.
         // puddle-only shine: the mask carries a low base smoothness and small high-smoothness puddles, so the range must stay wide
-        if (kind == "Wet") SetMaskMap(m, k, 0.04f, 0.97f);
-        else SetMaskMap(m, k, 0.04f, 0.90f);
+        if (kind == "Wet") SetMaskMap(m, k, 0.04f, 0.62f);
+        else SetMaskMap(m, k, 0.04f, 0.60f);          // dry asphalt can never reach the SSR floor (.80): only puddles mirror
         SetTiling(m, 1f, 0.5f);
         SetRipples(m, roadWidth, roadWidth, 1.3f, kind == "Wet" ? 1f : 0.6f);
         return true;
@@ -234,7 +234,7 @@ public static class ShuntaLookKit
         var a = Tex("Facade_" + style + "_Albedo"); var e = Tex("Facade_" + style + "_Emission"); var k = Tex("Facade_" + style + "_Mask");
         if (a == null || e == null || k == null) return null;
         var m = Lit(name, Color.white, 0.4f);
-        SetBaseMap(m, a, new Color(0.8f, 0.8f, 0.85f, 1f));
+        SetBaseMap(m, a, new Color(1.05f, 1.05f, 1.12f, 1f));       // was .8: facades read near-black at night
         SetNormal(m, Tex("Facade_" + style + "_Normal"), 1f);
         SetMaskMap(m, k, 0.1f, 0.85f);
         SetEmissiveMap(m, e, emitTint, rel);
@@ -263,6 +263,14 @@ public static class ShuntaLookKit
         }
         idx &= 15; int hc = idx % 2, hr = idx / 2;
         return new Rect((2048f + hc * 1024f) / 4096f + inset, 1f - (hr + 1) * 0.125f + inset, 1024f / 4096f - 2 * inset, 0.125f - 2 * inset);
+    }
+
+    /// <summary>UV rect of one of the 100 unique neon signs in Sign100_Atlas_* (10 x 10 cells of 512 x 256; n = 0..99, row 0 = top). Regenerate with tools/textures/ShuntaMetro/make_shunta_signs100.py.</summary>
+    public static Rect SignRect100(int n)
+    {
+        const float inset = 2f / 5120f;
+        n = Mathf.Clamp(n, 0, 99); int c = n % 10, r = n / 10;
+        return new Rect(c * 0.1f + inset, 1f - (r + 1) * 0.1f + inset, 0.1f - 2 * inset, 0.1f - 2 * inset);
     }
 
     public static Material GroundMaterial(Color tint)

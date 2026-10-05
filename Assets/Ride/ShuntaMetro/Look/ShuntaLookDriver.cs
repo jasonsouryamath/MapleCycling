@@ -52,11 +52,11 @@ public sealed class ShuntaLookDriver : MonoBehaviour
         {
             case "golden_dusk": return new Palette { sky0 = C(.10f, .17f, .45f), sky1 = C(1f, .55f, .30f), sky2 = C(.45f, .20f, .18f), sun = C(1f, .62f, .32f), sunRel = 1.1f, pitch = 9f, fog = C(.9f, .5f, .35f), fogDist = 2500f, neon = .5f, bloom = .25f, saturation = 10f };
             case "dusk": return new Palette { sky0 = C(.06f, .09f, .30f), sky1 = C(.85f, .30f, .30f), sky2 = C(.25f, .10f, .15f), sun = C(1f, .45f, .28f), sunRel = .6f, pitch = 4f, fog = C(.5f, .22f, .25f), fogDist = 2200f, neon = .75f, bloom = .3f, saturation = 12f };
-            case "blue_hour": return new Palette { sky0 = C(.02f, .04f, .20f), sky1 = C(.12f, .20f, .50f), sky2 = C(.10f, .08f, .20f), sun = C(.5f, .6f, 1f), sunRel = .22f, pitch = 25f, fog = C(.12f, .15f, .35f), fogDist = 1800f, neon = 1.1f, bloom = .35f, saturation = 12f };
+            case "blue_hour": return new Palette { sky0 = C(.02f, .04f, .20f), sky1 = C(.12f, .20f, .50f), sky2 = C(.10f, .08f, .20f), sun = C(.5f, .6f, 1f), sunRel = .34f, pitch = 25f, fog = C(.12f, .15f, .35f), fogDist = 1800f, neon = 1.1f, bloom = .35f, saturation = 12f };
             case "tunnel": return new Palette { sky0 = C(.01f, .02f, .03f), sky1 = C(.03f, .09f, .11f), sky2 = C(.03f, .08f, .10f), sun = C(.4f, .7f, .8f), sunRel = .02f, pitch = 60f, fog = C(.03f, .08f, .10f), fogDist = 500f, neon = 1.25f, bloom = .4f, saturation = 15f };
-            case "night": return new Palette { sky0 = C(.005f, .01f, .05f), sky1 = C(.03f, .04f, .12f), sky2 = C(.04f, .03f, .08f), sun = C(.55f, .65f, 1f), sunRel = .12f, pitch = 45f, fog = C(.05f, .05f, .12f), fogDist = 1600f, neon = 1.4f, bloom = .4f, saturation = 15f };
-            case "neon_night": return new Palette { sky0 = C(.01f, .005f, .06f), sky1 = C(.12f, .04f, .20f), sky2 = C(.15f, .04f, .15f), sun = C(.6f, .5f, 1f), sunRel = .10f, pitch = 40f, fog = C(.10f, .04f, .16f), fogDist = 1000f, neon = 1.8f, bloom = .5f, saturation = 20f };
-            case "deep_night": return new Palette { sky0 = C(.002f, .004f, .025f), sky1 = C(.015f, .02f, .07f), sky2 = C(.02f, .02f, .05f), sun = C(.5f, .6f, 1f), sunRel = .08f, pitch = 50f, fog = C(.02f, .025f, .07f), fogDist = 2200f, neon = 1.6f, bloom = .45f, saturation = 15f };
+            case "night": return new Palette { sky0 = C(.005f, .01f, .05f), sky1 = C(.03f, .04f, .12f), sky2 = C(.04f, .03f, .08f), sun = C(.55f, .65f, 1f), sunRel = .24f, pitch = 45f, fog = C(.05f, .05f, .12f), fogDist = 1600f, neon = 1.4f, bloom = .4f, saturation = 15f };
+            case "neon_night": return new Palette { sky0 = C(.01f, .005f, .06f), sky1 = C(.12f, .04f, .20f), sky2 = C(.15f, .04f, .15f), sun = C(.6f, .5f, 1f), sunRel = .22f, pitch = 40f, fog = C(.10f, .04f, .16f), fogDist = 1000f, neon = 1.8f, bloom = .5f, saturation = 20f };
+            case "deep_night": return new Palette { sky0 = C(.002f, .004f, .025f), sky1 = C(.015f, .02f, .07f), sky2 = C(.02f, .02f, .05f), sun = C(.5f, .6f, 1f), sunRel = .18f, pitch = 50f, fog = C(.02f, .025f, .07f), fogDist = 2200f, neon = 1.6f, bloom = .45f, saturation = 15f };
             case "pre_dawn": return new Palette { sky0 = C(.03f, .06f, .25f), sky1 = C(.35f, .35f, .60f), sky2 = C(.60f, .35f, .40f), sun = C(.7f, .7f, 1f), sunRel = .2f, pitch = 3f, fog = C(.3f, .3f, .5f), fogDist = 3500f, neon = .9f, bloom = .35f, saturation = 12f };
             case "sakura_dawn": return new Palette { sky0 = C(.15f, .25f, .55f), sky1 = C(1f, .70f, .80f), sky2 = C(1f, .55f, .55f), sun = C(1f, .75f, .75f), sunRel = .9f, pitch = 5f, fog = C(1f, .70f, .80f), fogDist = 4000f, neon = .35f, bloom = .3f, saturation = 12f };
             default: return PaletteFor("night");
@@ -265,16 +265,24 @@ public sealed class ShuntaLookDriver : MonoBehaviour
         var sky = profile.Add<GradientSky>(true);
         sky.skyIntensityMode.value = SkyIntensityMode.Exposure; sky.exposure.value = ShuntaLookKit.EV; sky.gradientDiffusion.value = 4f;
         var exp = profile.Add<Exposure>(true); exp.mode.value = ExposureMode.Fixed; exp.fixedExposure.value = ShuntaLookKit.EV;
-        var fog = profile.Add<Fog>(true); fog.enabled.value = true; fog.colorMode.value = FogColorMode.ConstantColor; fog.enableVolumetricFog.value = false; fog.maxFogDistance.value = 12000f;
+        var fog = profile.Add<Fog>(true); fog.enabled.value = true; fog.colorMode.value = FogColorMode.ConstantColor; fog.enableVolumetricFog.value = true; fog.depthExtent.value = 200f; fog.anisotropy.value = 0.55f; fog.albedo.value = new Color(0.62f, 0.70f, 0.85f);   // 2026-10-04 photoreal pass: neon/streetlight shafts and halos in the night air
+         fog.maxFogDistance.value = 12000f;
+        var water = profile.Add<WaterRendering>(true); water.enable.value = true; water.triangleSize.value = 32f;   // required for the Shunta ocean (ShuntaOcean)
         var bloom = profile.Add<Bloom>(true); bloom.threshold.value = 0.9f; bloom.intensity.value = 0.4f; bloom.scatter.value = 0.75f;
         var tm = profile.Add<Tonemapping>(true); tm.mode.value = TonemappingMode.ACES;
-        var ca = profile.Add<ColorAdjustments>(true); ca.saturation.value = 15f; ca.contrast.value = 8f;
+        var ca = profile.Add<ColorAdjustments>(true); ca.saturation.value = 15f; ca.contrast.value = 8f; ca.postExposure.Override(0.45f);   // 2026-10-04: streets were near-black canyons
         // 2026-10-04: reflections only where the surface is really wet. The road/ground/pavement masks now keep dry smoothness <= ~.6, so a
         // .80 floor leaves screen-space reflections to the puddles alone (the user: "dont make shunta road glass reflective").
-        var ssr = profile.Add<ScreenSpaceReflection>(true); ssr.enabled.value = true; ssr.reflectSky.value = true; ssr.minSmoothness = 0.80f; ssr.smoothnessFadeStart = 0.84f;
+        var ssr = profile.Add<ScreenSpaceReflection>(true); ssr.enabled.value = true; ssr.reflectSky.value = true; ssr.minSmoothness = 0.9f; ssr.smoothnessFadeStart = 0.93f; ssr.reflectSky.value = false;
         // fidelity: contact shadowing under cars, riders, kerbs and awnings, and a light vignette to hold the eye on the road
-        var ao = profile.Add<ScreenSpaceAmbientOcclusion>(true); ao.intensity.Override(0.55f); ao.radius.Override(1.4f);
+        var ao = profile.Add<ScreenSpaceAmbientOcclusion>(true); ao.intensity.Override(0.75f); ao.radius.Override(1.6f);
         var vig = profile.Add<Vignette>(true); vig.intensity.Override(0.20f); vig.smoothness.Override(0.6f);
+        // 2026-10-04 photoreal pass: camera-ish imperfections + contact shadows + lens response. Kept subtle; all optional volume overrides.
+        var grain = profile.Add<FilmGrain>(true); grain.type.value = FilmGrainLookup.Thin2; grain.intensity.value = 0.22f; grain.response.value = 0.8f;
+        var mb = profile.Add<MotionBlur>(true); mb.intensity.value = 0.35f;
+        var cab = profile.Add<ChromaticAberration>(true); cab.intensity.value = 0.07f;
+        var flare = profile.Add<ScreenSpaceLensFlare>(true); flare.intensity.value = 0.5f; flare.streaksIntensity.value = 0.6f; flare.streaksThreshold.value = 0.4f;
+        var cs = profile.Add<ContactShadows>(true); cs.enable.value = true; cs.length.value = 0.25f; cs.opacity.value = 0.9f; cs.maxDistance.value = 60f;
         vol.sharedProfile = profile;
 
         var lgo = new GameObject("Shunta Sun/Moon") { hideFlags = HideFlags.DontSave };

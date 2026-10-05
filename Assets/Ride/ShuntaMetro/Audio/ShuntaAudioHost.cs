@@ -72,6 +72,7 @@ public sealed class ShuntaDirector : MonoBehaviour
     private ShuntaAmbienceSynth _amb;
     private float _crowdDensity, _trafficDensity;
     private ShuntaMusicSynth _mus;
+    private AudioSource _bgm; private AudioLowPassFilter _bgmLp;   // "Harbour Lights" (Resources/ShuntaMetro/shunta_bgm), see tools/audio/make_shunta_bgm.py
     private readonly float[] _aw = new float[ShuntaAudioMap.AmbCount], _mw = new float[ShuntaAudioMap.MusCount];
     private float _enter, _effort, _km, _bpm, _bright, _tunnel;
 
@@ -87,6 +88,13 @@ public sealed class ShuntaDirector : MonoBehaviour
         var m = new GameObject("Music"); m.transform.SetParent(transform, false);
         m.AddComponent<AudioSource>();
         _mus = m.AddComponent<ShuntaMusicSynth>();
+        var clip = Resources.Load<AudioClip>("ShuntaMetro/shunta_bgm");
+        if (clip != null)
+        {
+            var b = new GameObject("BGM"); b.transform.SetParent(transform, false);
+            _bgm = b.AddComponent<AudioSource>(); _bgmLp = b.AddComponent<AudioLowPassFilter>();
+            _bgm.clip = clip; _bgm.loop = true; _bgm.spatialBlend = 0f; _bgm.volume = 0f; _bgm.priority = 20; _bgm.bypassReverbZones = true; _bgm.Play();
+        }
         Sample(true);
     }
 
@@ -151,7 +159,13 @@ public sealed class ShuntaDirector : MonoBehaviour
         _mus.Brightness = Mathf.Clamp01(_bright + 0.15f * _effort);
         _mus.Effort = _effort;
         _mus.TunnelFx = _tunnel;
-        _mus.Master = level * 0.55f * gate * _enter;
+        // the composed BGM leads; the zone-reactive synth stays underneath as a quiet layer
+        _mus.Master = level * (_bgm != null ? 0.18f : 0.55f) * gate * _enter;
+        if (_bgm != null)
+        {
+            _bgm.volume = Mathf.Clamp01(level * 0.85f) * gate * _enter;
+            _bgmLp.cutoffFrequency = Mathf.Lerp(22000f, 1400f, _tunnel);
+        }
     }
 
     public string Describe() =>

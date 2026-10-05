@@ -63,7 +63,7 @@ public static class ShuntaLookScenery
             ShuntaLookKit.SetEmissiveMap(zm.building, win, wtint, 0.7f);
             neon.Add(new NeonMat { mat = zm.building, rgb = wtint, rel = 0.7f });
             zm.strip = ShuntaLookKit.Lit("Strip" + z.index, new Color(0.02f, 0.02f, 0.02f), 0.5f); Reg(zm.strip, col, 1.5f);
-            zm.streak = ShuntaLookKit.Lit("Streak" + z.index, new Color(0.02f, 0.02f, 0.02f), 0.9f); Reg(zm.streak, col, 0.9f);
+            zm.streak = ShuntaLookKit.Lit("Streak" + z.index, new Color(0.02f, 0.02f, 0.02f), 0.4f); Reg(zm.streak, col, 0.3f);
             zm.signA = ShuntaLookKit.Lit("SignA" + z.index, new Color(0.03f, 0.03f, 0.03f), 0.5f); Reg(zm.signA, col, 4f);
             zm.signB = ShuntaLookKit.Lit("SignB" + z.index, new Color(0.03f, 0.03f, 0.03f), 0.5f); Reg(zm.signB, comp, 3.5f);
             zm.signC = ShuntaLookKit.Lit("SignC" + z.index, new Color(0.03f, 0.03f, 0.03f), 0.5f); Reg(zm.signC, side, 3.5f);
@@ -165,7 +165,7 @@ public static class ShuntaLookScenery
             var rotH = Quaternion.LookRotation(tanH, Vector3.up);
 
             // road light streak (reflection of the neon on a wet surface)
-            if (rng.NextDouble() < (z.surface == "wet_asphalt" ? 0.9 : 0.35))
+            if (rng.NextDouble() < (z.surface == "wet_asphalt" ? 0.2 : 0.05))
             {
                 float lat = Rand(rng, -half + 1.2f, half - 1.2f), slen = Rand(rng, 6f, 18f), sw = Rand(rng, 0.25f, 0.9f);
                 var sp = rb.PositionAtKm(km) + rightV * lat;
@@ -182,12 +182,12 @@ public static class ShuntaLookScenery
 
         // ------------------------------------------------ ground, sea
         var ground = Plain(neon, "Ground", new Color(0.03f, 0.03f, 0.04f), 0.15f, Color.black, 0f);
-        var sea = Plain(neon, "Sea", new Color(0.01f, 0.03f, 0.07f), 0.97f, new Color(0.05f, 0.2f, 0.45f), 0.12f);
         bag.Box(ground, new Vector3(b.center.x, GroundY - 1f, b.center.z), Quaternion.identity, new Vector3(b.size.x + 14000f, 2f, b.size.z + 14000f), 40f, 40f);
         var sb = new Bounds(); bool any = false;
         for (int i = 0; i < rb.Positions.Length; i++)
             if (rb.Km[i] >= 21.0f) { var p = rb.Positions[i]; if (!any) { sb = new Bounds(p, Vector3.zero); any = true; } else sb.Encapsulate(p); }
-        if (any) bag.Box(sea, new Vector3(sb.center.x, GroundY + 1.2f, sb.center.z), Quaternion.identity, new Vector3(sb.size.x + 3600f, 0.3f, sb.size.z + 3600f), 100f, 100f);
+        // 2026-10-04: the flat emissive box is gone - a real HDRP ocean (ShuntaOcean) runs from the coast to the horizon
+        if (any) ShuntaOcean.Build(parent, sb, b.center);
 
         // ------------------------------------------------ landmarks (from JSON, with fixed stylised placements)
         foreach (var lm in c.landmarks)
