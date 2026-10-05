@@ -15,11 +15,11 @@ from shunta_tex_lib import *
 ROAD_W, ROAD_L = 9.0, 18.0
 
 CFG = {
-    "Wet":        dict(w=2048, base=44, tint=(1.00, 1.00, 1.06), grain=15, sm=0.26, puddle=0.085, cracks=11, patches=6, centre="white", track=1.0, manhole=True, drains=True, seed=100),
-    "Dry":        dict(w=2048, base=58, tint=(1.00, 0.99, 0.97), grain=17, sm=0.14, puddle=0.045, cracks=15, patches=7, centre="yellow", track=0.8, manhole=True, drains=True, seed=200),
-    "Tunnel":     dict(w=1024, base=116, tint=(1.00, 0.98, 0.93), grain=10, sm=0.22, puddle=0.04, cracks=6, patches=2, centre="white", track=0.8, joints=True, soot=True, seed=300),
-    "Expressway": dict(w=1024, base=50, tint=(1.00, 1.00, 1.03), grain=10, sm=0.18, puddle=0.02, drains=True, cracks=3, patches=2, centre="white", track=0.9, cats=True, seed=400),
-    "Bridge":     dict(w=1024, base=56, tint=(1.00, 1.00, 1.02), grain=10, sm=0.18, puddle=0.035, drains=True, cracks=2, patches=1, centre="white", track=0.8, bridge=True, seed=500),
+    "Wet":        dict(w=2048, base=28, tint=(1.00, 1.00, 1.06), grain=11, sm=0.26, puddle=0.085, cracks=11, patches=6, centre="white", track=1.0, manhole=True, drains=True, seed=100),
+    "Dry":        dict(w=2048, base=34, tint=(1.00, 0.99, 0.97), grain=12, sm=0.14, puddle=0.045, cracks=15, patches=7, centre="yellow", track=0.8, manhole=True, drains=True, seed=200),
+    "Tunnel":     dict(w=1024, base=36, tint=(1.00, 0.98, 0.93), grain=10, sm=0.22, puddle=0.04, cracks=6, patches=2, centre="white", track=0.8, joints=True, soot=True, seed=300),
+    "Expressway": dict(w=1024, base=30, tint=(1.00, 1.00, 1.03), grain=10, sm=0.18, puddle=0.02, drains=True, cracks=3, patches=2, centre="white", track=0.9, cats=True, seed=400),
+    "Bridge":     dict(w=1024, base=32, tint=(1.00, 1.00, 1.02), grain=10, sm=0.18, puddle=0.035, drains=True, cracks=2, patches=1, centre="white", track=0.8, bridge=True, seed=500),
 }
 
 

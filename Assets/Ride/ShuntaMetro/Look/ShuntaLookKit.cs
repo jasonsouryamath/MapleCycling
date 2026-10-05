@@ -214,7 +214,7 @@ public static class ShuntaLookKit
         string kind = RoadKind(z, wet);
         var a = Tex("Road_" + kind + "_Albedo"); var k = Tex("Road_" + kind + "_Mask");
         if (a == null || k == null) return false;
-        float t = kind == "Wet" ? 1.20f : Mathf.Lerp(1.35f, 1.15f, wet);      // 2026-10-04: lighter asphalt so streetlight pools and lane paint read
+        float t = kind == "Wet" ? 1.05f : Mathf.Lerp(1.15f, 1.05f, wet);     // 2026-10-04: black asphalt      // 2026-10-04: lighter asphalt so streetlight pools and lane paint read
         SetBaseMap(m, a, new Color(t, t, t * 1.03f, 1f));
         SetNormal(m, Tex("Road_" + kind + "_Normal"), 1f);
         // 2026-10-04: caps lowered (was wet .85-.99, dry .55-.95) - roads read as glass; rain zones stay visibly wet but not mirrors.
