@@ -63,11 +63,19 @@ jobs:
           name: editmode-results
           path: artifacts
 
-  weather-validation:
+  validation:
+    name: validate ${{ matrix.method }}
     needs: check-license
     if: needs.check-license.outputs.has_license == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        method:
+          - WeatherMathValidation.Run
+          - ShuntaMetroGameplayTest.Run
+          - ShuntaNpcLightingValidation.Run
     steps:
       - uses: actions/checkout@v4
         with:
@@ -86,11 +94,11 @@ jobs:
         with:
           unityVersion: ${{ env.UNITY_VERSION }}
           targetPlatform: StandaloneLinux64
-          buildMethod: WeatherMathValidation.Run
+          buildMethod: ${{ matrix.method }}
           allowDirtyBuild: true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: weather-validation-logs
+          name: validation-logs-${{ matrix.method }}
           path: build
           if-no-files-found: ignore
