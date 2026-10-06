@@ -168,6 +168,69 @@ public static class PedestrianKuroLook
     }
 
     /// <summary>
+    /// Hair only: hides the donor's helmet / hair cap and mounts one authored hair mesh on the Head bone with a tinted
+    /// clone of the body's cel material. The body mesh keeps its vertices, UVs and skin weights (the helmet is collapsed
+    /// onto the skull, same as <see cref="Apply"/>). Idempotent; returns the hair object or null. Used by Shunta's NPC styles.
+    /// </summary>
+    public static GameObject ApplyHair(GameObject go, PedestrianModelLibrary.KuroRiderSet set, int hair, int colour)
+    {
+        if (go == null || set == null || !set.enabled || set.hairStyles == null) return null;
+        if (hair < 0 || hair >= set.hairStyles.Length || set.hairStyles[hair] == null) return null;
+        var high = go.transform.Find("LOD0 High Skinned");
+        Transform head = null;
+        foreach (var t in go.GetComponentsInChildren<Transform>(true)) if (t.name == "Head") { head = t; break; }
+        if (high == null || head == null) return null;
+        foreach (Transform child in head) if (child.name == "Ped Hair") return child.gameObject;
+        var tagLook = go.GetComponent<MapleCityLook>();
+        var cap = tagLook != null ? tagLook.hairCap : null;
+        if (cap != null) cap.forceRenderingOff = true;
+        foreach (var r in go.GetComponentsInChildren<Renderer>(true))
+            if (r.name == "Ped Hat" || r.name == "Hair Cap") r.forceRenderingOff = true;
+        CollapseHelmet(high);
+        var h = UnityEngine.Object.Instantiate(set.hairStyles[hair]);
+        h.name = "Ped Hair";
+        float s = go.transform.lossyScale.y * Mathf.Max(0.01f, set.hairScale);
+        h.transform.SetPositionAndRotation(head.position + go.transform.rotation * (set.hairOffset * go.transform.lossyScale.y), go.transform.rotation);
+        h.transform.localScale = Vector3.one * s;
+        h.transform.SetParent(head, true);
+        AlignToCap(h.transform, cap, go.transform.lossyScale.y);
+        var hairShape = h.GetComponent<HelmetDrivenHairShapeKey>();
+        if (hairShape == null) hairShape = h.AddComponent<HelmetDrivenHairShapeKey>();
+        hairShape.Bind(high, head);
+        var extras = new List<Renderer>();
+        var hm = HairMaterial(high, set, colour);
+        foreach (var r in h.GetComponentsInChildren<Renderer>(true))
+        {
+            r.gameObject.layer = go.layer;
+            r.shadowCastingMode = ShadowCastingMode.On;
+            r.lightProbeUsage = LightProbeUsage.BlendProbes;
+            if (hm != null)
+            {
+                var hms = r.sharedMaterials;
+                for (int i = 0; i < hms.Length; i++) hms[i] = hm;
+                r.sharedMaterials = hms;
+            }
+            extras.Add(r);
+        }
+        RegisterOnLod0(go, extras);
+        Haired++;
+        return h.gameObject;
+    }
+
+    /// <summary>Adds renderers to LOD0 of the figure's LODGroup so they cull with it.</summary>
+    public static void RegisterOnLod0(GameObject go, List<Renderer> extras)
+    {
+        var group = go != null ? go.GetComponent<LODGroup>() : null;
+        if (group == null || extras == null || extras.Count == 0) return;
+        var lods = group.GetLODs();
+        if (lods.Length == 0) return;
+        var list = new List<Renderer>(lods[0].renderers ?? Array.Empty<Renderer>());
+        list.AddRange(extras);
+        lods[0].renderers = list.ToArray();
+        group.SetLODs(lods);
+    }
+
+    /// <summary>
     /// The donor hair cap always sits on the skull. If the authored hair's centre is clearly off it (Nagisa
     /// Bay figures put the hair ~0.4 m low and behind, leaving the kit's near-black scalp showing as a black
     /// dome), slide the hair so its bounds centre matches the cap's. Within tolerance it is left untouched, so

@@ -73,6 +73,9 @@ public sealed class RiderBlink : MonoBehaviour
     /// <summary>Force a closed amount (0 open .. 1 shut) for captures; NaN = normal blinking.</summary>
     [NonSerialized] public float Override = float.NaN;
 
+    /// <summary>0 = lids open .. 1 = shut (the current blink amount).</summary>
+    public float ClosedAmount => _amount;
+
     public static BodyData Lookup(string key)
     {
         if (!_loaded)
