@@ -5,6 +5,9 @@ name: Unity license request
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [".github/workflows/unity-request-license.yml"]
 
 jobs:
   request:
