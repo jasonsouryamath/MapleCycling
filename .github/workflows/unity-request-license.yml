@@ -1,0 +1,20 @@
+# One-time helper: generates a Unity license request (.alf) as a downloadable artifact.
+# Upload it at https://license.unity3d.com/manual, pick "Unity Personal Edition",
+# then paste the returned .ulf text into the UNITY_LICENSE repo secret.
+name: Unity license request
+
+on:
+  workflow_dispatch:
+
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    steps:
+      - id: request
+        uses: game-ci/unity-request-activation-file@v2
+        with:
+          unityVersion: 6000.4.11f1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.request.outputs.filePath }}
+          path: ${{ steps.request.outputs.filePath }}
