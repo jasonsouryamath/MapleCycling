@@ -30,10 +30,15 @@ public static class ShuntaNpcStylePreview
         { Debug.LogError("[shunta-style] no NPC library riders; run ShuntaNpcLightingValidation.BuildLibrary first"); Fail(); return; }
         Directory.CreateDirectory(Folder); AssetDatabase.Refresh();
         int made = 0; var prefabs = new List<string>();
+        // Only bodies with the Kuro head sculpt have stored face data to place eyes on; use those as sources.
+        var sources = new List<GameObject>();
+        foreach (var rider in library.riders)
+            if (rider != null && BodySignature(rider) != "none") sources.Add(rider);
+        Debug.Log($"[shunta-style] {sources.Count}/{library.riders.Length} library riders have a styleable body");
+        if (sources.Count == 0) { Fail(); return; }
         for (int i = 0; i < ShuntaNpcStyle.EyeStyleCount; i++)
         {
-            var source = library.riders[i % library.riders.Length];
-            if (source == null) continue;
+            var source = sources[i % sources.Count];
             var parking = new GameObject("~style preview") { hideFlags = HideFlags.HideAndDontSave }; parking.SetActive(false);
             try
             {
@@ -214,12 +219,19 @@ public static class ShuntaNpcStylePreview
         var ctorArgs = ctor.GetParameters().Select(p => p.ParameterType == settingsType ? settings : p.HasDefaultValue ? p.DefaultValue : null).ToArray();
         object export = ctor.Invoke(ctorArgs);
 
-        var add = exportType.GetMethods().Where(m => m.Name == "AddScene" && m.GetParameters().Length > 0 && m.GetParameters()[0].ParameterType == typeof(GameObject[]))
+        var add = exportType.GetMethods().Where(m => m.Name == "AddScene" && m.GetParameters().Length > 0 && m.GetParameters()[0].ParameterType.IsAssignableFrom(typeof(GameObject[])))
                             .OrderBy(m => m.GetParameters().Length).FirstOrDefault();
-        var save = exportType.GetMethod("SaveToFileAndDispose", new[] { typeof(string) });
-        if (add == null || save == null) { Debug.LogError("[shunta-style] AddScene / SaveToFileAndDispose not found on GameObjectExport"); return false; }
-        add.Invoke(export, add.GetParameters().Select((p, i) => i == 0 ? roots : p.HasDefaultValue ? p.DefaultValue : null).ToArray());
-        var task = (Task)save.Invoke(export, new object[] { path });
+        var save = exportType.GetMethods().Where(m => m.Name == "SaveToFileAndDispose" && m.GetParameters().Length > 0 && m.GetParameters()[0].ParameterType == typeof(string))
+                             .OrderBy(m => m.GetParameters().Length).FirstOrDefault();
+        if (add == null || save == null)
+        {
+            Debug.LogError("[shunta-style] AddScene / SaveToFileAndDispose not found; GameObjectExport offers: " + string.Join("; ",
+                exportType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                          .Select(m => m.Name + "(" + string.Join(", ", m.GetParameters().Select(q => q.ParameterType.Name + " " + q.Name)) + ")")));
+            return false;
+        }
+        add.Invoke(export, add.GetParameters().Select((q, i) => i == 0 ? (object)roots : q.HasDefaultValue ? q.DefaultValue : null).ToArray());
+        var task = (Task)save.Invoke(export, save.GetParameters().Select((q, i) => i == 0 ? (object)path : q.HasDefaultValue ? q.DefaultValue : null).ToArray());
         Pump(task);
         bool success = task.IsCompleted && !task.IsFaulted && File.Exists(path);
         if (success) { var result = task.GetType().GetProperty("Result")?.GetValue(task); if (result is bool b) success = b; }
