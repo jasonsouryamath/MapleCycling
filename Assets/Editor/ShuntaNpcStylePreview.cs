@@ -5,8 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using GLTFast;
-using GLTFast.Export;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -189,15 +188,43 @@ public static class ShuntaNpcStylePreview
         return t is Texture2D t2 && t2.isReadable ? t2 : null;
     }
 
+    /// <summary>
+    /// glTFast's exporter lives in its own assembly that the predefined editor assembly cannot reference at compile time
+    /// (and an asmdef could not see the game's types), so it is driven by reflection: GameObjectExport + ExportSettings{Format=Binary}.
+    /// </summary>
     static bool Export(GameObject[] roots, string path)
     {
-        var export = new GameObjectExport(new ExportSettings { Format = GltfFormat.Binary });
-        export.AddScene(roots);
-        var task = export.SaveToFileAndDispose(path);
+        Type exportType = null, settingsType = null;
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            exportType = exportType ?? asm.GetType("GLTFast.Export.GameObjectExport", false);
+            settingsType = settingsType ?? asm.GetType("GLTFast.Export.ExportSettings", false);
+        }
+        if (exportType == null || settingsType == null) { Debug.LogError("[shunta-style] glTFast export types not found in any loaded assembly"); return false; }
+        object settings = Activator.CreateInstance(settingsType);
+        var fmt = (MemberInfo)settingsType.GetField("Format") ?? settingsType.GetProperty("Format");
+        if (fmt == null) { Debug.LogError("[shunta-style] ExportSettings.Format not found"); return false; }
+        Type fmtType = fmt is FieldInfo fi ? fi.FieldType : ((PropertyInfo)fmt).PropertyType;
+        object binary = Enum.Parse(fmtType, "Binary");
+        if (fmt is FieldInfo f2) f2.SetValue(settings, binary); else ((PropertyInfo)fmt).SetValue(settings, binary);
+
+        var ctor = exportType.GetConstructors().OrderBy(c => c.GetParameters().Length).FirstOrDefault(c => c.GetParameters().Length > 0 && c.GetParameters()[0].ParameterType == settingsType)
+                   ?? exportType.GetConstructors().OrderBy(c => c.GetParameters().Length).FirstOrDefault();
+        if (ctor == null) { Debug.LogError("[shunta-style] GameObjectExport has no usable constructor"); return false; }
+        var ctorArgs = ctor.GetParameters().Select(p => p.ParameterType == settingsType ? settings : p.HasDefaultValue ? p.DefaultValue : null).ToArray();
+        object export = ctor.Invoke(ctorArgs);
+
+        var add = exportType.GetMethods().Where(m => m.Name == "AddScene" && m.GetParameters().Length > 0 && m.GetParameters()[0].ParameterType == typeof(GameObject[]))
+                            .OrderBy(m => m.GetParameters().Length).FirstOrDefault();
+        var save = exportType.GetMethod("SaveToFileAndDispose", new[] { typeof(string) });
+        if (add == null || save == null) { Debug.LogError("[shunta-style] AddScene / SaveToFileAndDispose not found on GameObjectExport"); return false; }
+        add.Invoke(export, add.GetParameters().Select((p, i) => i == 0 ? roots : p.HasDefaultValue ? p.DefaultValue : null).ToArray());
+        var task = (Task)save.Invoke(export, new object[] { path });
         Pump(task);
-        bool done = task.IsCompleted && !task.IsFaulted && task.Result && File.Exists(path);
-        Debug.Log($"[shunta-style] GLB {(done ? "OK" : "FAILED")}: {path}" + (done ? $" ({new FileInfo(path).Length / 1024} KB)" : ""));
-        return done;
+        bool success = task.IsCompleted && !task.IsFaulted && File.Exists(path);
+        if (success) { var result = task.GetType().GetProperty("Result")?.GetValue(task); if (result is bool b) success = b; }
+        Debug.Log($"[shunta-style] GLB {(success ? "OK" : "FAILED")}: {path}" + (success ? $" ({new FileInfo(path).Length / 1024} KB)" : task.IsFaulted ? " " + task.Exception : ""));
+        return success;
     }
 
     /// <summary>Batch mode has no player loop to resume the exporter's awaits on the main thread, so drive Unity's own queue until the task ends.</summary>
