@@ -24,7 +24,7 @@ public sealed partial class ShuntaNeoTokyo : MonoBehaviour
         public readonly List<Mesh> meshes = new List<Mesh>();
         public readonly List<Light> lights = new List<Light>();
         public readonly List<MeshRenderer> casters = new List<MeshRenderer>();
-        public int buildings, signs, details, triangles, streetlights, infill; public readonly int[] families = new int[6];
+        public int buildings, signs, details, triangles, streetlights, infill, bridges; public readonly int[] families = new int[6];
     }
     readonly Dictionary<int, Block> chunks = new Dictionary<int, Block>();
     readonly List<int> retire = new List<int>();
@@ -143,10 +143,11 @@ public sealed partial class ShuntaNeoTokyo : MonoBehaviour
         }
         BuildSkylineCluster(id, coarse, fine, block);
         BuildCityInfill(id, coarse, fine, block);
+        BuildSkybridges(id, start, end, coarse, fine, block);
         Flush(coarse, block.root.transform, "City mass", block, true);
         Flush(fine, block.detail.transform, "City detail", block, false);
         chunks.Add(id, block);
-        BuildingCount += block.buildings; SignCount += block.signs; DetailCount += block.details; TriangleCount += block.triangles; StreetlightCount += block.streetlights;
+        BuildingCount += block.buildings; SignCount += block.signs; DetailCount += block.details; TriangleCount += block.triangles; StreetlightCount += block.streetlights; SkybridgeCount += block.bridges;
         watch.Stop(); LastBuildMs = (float)watch.Elapsed.TotalMilliseconds;
     }
 
@@ -189,7 +190,7 @@ public sealed partial class ShuntaNeoTokyo : MonoBehaviour
     }
     void RemoveBlock(int id)
     {
-        var b = chunks[id]; InfillBuildingCount-=b.infill; for(int i=0;i<6;i++) skylineFamilies[i]-=b.families[i]; BuildingCount -= b.buildings; SignCount -= b.signs; DetailCount -= b.details; TriangleCount -= b.triangles; StreetlightCount -= b.streetlights;
+        var b = chunks[id]; InfillBuildingCount-=b.infill; for(int i=0;i<6;i++) skylineFamilies[i]-=b.families[i]; BuildingCount -= b.buildings; SignCount -= b.signs; DetailCount -= b.details; TriangleCount -= b.triangles; StreetlightCount -= b.streetlights; SkybridgeCount -= b.bridges;
         foreach (var mesh in b.meshes) Dispose(mesh);
         Dispose(b.root); chunks.Remove(id);
     }
