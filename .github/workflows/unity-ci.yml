@@ -76,6 +76,7 @@ jobs:
           - WeatherMathValidation.Run
           - ShuntaMetroGameplayTest.Run
           - ShuntaSkybridgeTest.Run
+          - ShuntaFarSkylineTest.Run
           # ShuntaNpcLightingValidation.Run is excluded: it asserts Shader.isSupported,
           # which needs a GPU; the CI runner has none (failed on the first check, run #9).
     steps:

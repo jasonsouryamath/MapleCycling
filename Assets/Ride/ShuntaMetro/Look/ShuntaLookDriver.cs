@@ -22,6 +22,13 @@ public sealed class ShuntaLookDriver : MonoBehaviour
     public Transform follow;
     [Min(0f)] public float previewKm = 0.3f;
     public bool buildScenery = true;
+    [Header("Depth")]
+    [Tooltip("Rings of distant skyscraper silhouettes (1.6-13 km) with haze, windows and aircraft beacons.")]
+    public bool farSkyline = true;
+    [Tooltip("Optional camera depth-of-field: soft blur on the far distance. Off by default (costs GPU time).")]
+    public bool depthOfField = false;
+    [Tooltip("Metres from the camera where the far blur starts / reaches full strength.")]
+    public float dofFarStartM = 300f, dofFarEndM = 2500f;
     [Tooltip("Metres of blending either side of a zone border.")]
     public float blendMetres = 450f;
 
@@ -147,6 +154,7 @@ public sealed class ShuntaLookDriver : MonoBehaviour
         built = new ShuntaLookScenery.Result();
         if (buildScenery) built = ShuntaLookScenery.Build(route, gen.transform);
         BuildVolumeAndLight();
+        if (farSkyline) BuildFarSkyline();
         lastKm = -99f; ApplyKm(previewKm);
         LastReport = $"[shunta-look] road mats {roadMats.Count}, meshes {built.objects.Count}, buildings {built.buildings}, signs {built.signs}, strips {built.strips}, streaks {built.streaks}, props {built.props}, neon mats {built.neon.Count}";
         Debug.Log(LastReport);
@@ -186,7 +194,7 @@ public sealed class ShuntaLookDriver : MonoBehaviour
         {
             var child = transform.GetChild(i);
             if (child.name == GenName || child.name == "Shunta Look Volume" ||
-                child.name == "Shunta Rider Fill" || child.name == "Shunta Sun/Moon")
+                child.name == "Shunta Rider Fill" || child.name == "Shunta Sun/Moon" || child.name == FarSkylineName)
                 DestroyNow(child.gameObject);
         }
     }
@@ -253,6 +261,15 @@ public sealed class ShuntaLookDriver : MonoBehaviour
         mr.shadowCastingMode = ShadowCastingMode.Off;
     }
 
+    // ---------------------------------------------------------------- far skyline
+    void BuildFarSkyline()
+    {
+        var go = new GameObject(FarSkylineName) { hideFlags = HideFlags.DontSave };
+        go.transform.SetParent(transform, false);
+        go.AddComponent<ShuntaFarSkyline>();
+    }
+    const string FarSkylineName = "Shunta Far Skyline";
+
     // ---------------------------------------------------------------- volume + sun
     void BuildVolumeAndLight()
     {
@@ -282,6 +299,11 @@ public sealed class ShuntaLookDriver : MonoBehaviour
         var mb = profile.Add<MotionBlur>(true); mb.intensity.value = 0.35f;
         var cab = profile.Add<ChromaticAberration>(true); cab.intensity.value = 0.07f;
         var flare = profile.Add<ScreenSpaceLensFlare>(true); flare.intensity.value = 0.5f; flare.streaksIntensity.value = 0.6f; flare.streaksThreshold.value = 0.4f;
+        var dof = profile.Add<DepthOfField>(true);
+        dof.focusMode.value = DepthOfFieldMode.Manual;
+        dof.nearFocusStart.value = 0f; dof.nearFocusEnd.value = 0f;
+        dof.farFocusStart.value = dofFarStartM; dof.farFocusEnd.value = dofFarEndM;
+        dof.active = depthOfField;
         var cs = profile.Add<ContactShadows>(true); cs.enable.value = true; cs.length.value = 0.25f; cs.opacity.value = 0.9f; cs.maxDistance.value = 60f;
         vol.sharedProfile = profile;
 
@@ -316,6 +338,12 @@ public sealed class ShuntaLookDriver : MonoBehaviour
             sun.transform.rotation = Quaternion.Euler(p.pitch, route.TangentAtKm(km).x > 0 ? 250f : 70f, 0f);
         }
         if (fill != null) fill.color = Color.Lerp(p.fog, Color.white, 0.6f);
+        if (profile.TryGet(out DepthOfField dofNow))
+        {
+            dofNow.active = depthOfField;
+            dofNow.farFocusStart.value = dofFarStartM; dofNow.farFocusEnd.value = dofFarEndM;
+        }
+        ShuntaFarSkyline.NotifyKm(route, km, p.sky1, p.neon);   // far skyline hook: rings follow the applied km (zone shape + horizon haze)
         ShuntaNightSky.NotifyKm(route, km);   // sky hook (claude, 2026-10-03): night sky follows the applied km
         if (built != null)
             foreach (var n in built.neon)
